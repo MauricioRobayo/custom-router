@@ -6,6 +6,7 @@ import { readFile } from "fs/promises";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { ComponentType } from "react";
+import path from "path";
 
 const Module1 = dynamic(() => import("../components/Module1"));
 const Module2 = dynamic(() => import("../components/Module2"));
@@ -40,7 +41,10 @@ const Home: NextPage<{ modules: Modules }> = ({ modules }) => {
 };
 
 export async function getServerSideProps() {
-  const json = await readFile("./modules.json", "utf-8");
+  const json = await readFile(
+    path.join(process.cwd(), "./modules.json"),
+    "utf-8"
+  );
 
   return {
     props: { modules: JSON.parse(json) },
